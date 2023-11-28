@@ -26,6 +26,7 @@
           (runnables "apps")
           (functions "hydra")
           (devshells "shells")
+          (functions "nixosModules")
         ];
       }
       {
@@ -38,6 +39,10 @@
         hydraJobs = (std.harvest inputs.self [
           [ "hlsdl" "hydra" ]
         ]).x86_64-linux;
+
+        nixosModules = std.harvest inputs.self [
+          [ "hlsdl" "nixosModules" ]
+        ];
       };
 
 }
