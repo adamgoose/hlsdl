@@ -29,8 +29,11 @@
 
       config = l.mkIf cfg.enable {
 
-        # Realize the desired configuration here
         systemd.packages = [
+          cell.apps.default
+        ];
+
+        environment.systemPackages = [
           cell.apps.default
         ];
 
