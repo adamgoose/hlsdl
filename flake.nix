@@ -24,6 +24,7 @@
         cellBlocks = with std.blockTypes; [
           (pkgs "pkgs")
           (runnables "apps")
+          (functions "hydra")
           (devshells "shells")
         ];
       }
@@ -33,6 +34,10 @@
         packages = std.harvest inputs.self [
           [ "hlsdl" "apps" ]
         ];
+
+        hydraJobs = (std.harvest inputs.self [
+          [ "hlsdl" "hydra" ]
+        ]).x86_64-linux;
       };
 
 }

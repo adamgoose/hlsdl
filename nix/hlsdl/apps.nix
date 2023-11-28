@@ -15,17 +15,13 @@ in
     modules = "${inputs.self}/gomod2nix.toml";
     doCheck = false;
 
-    # nativeBuildInputs = [
-    #   pkg-config
-    # ];
+    nativeBuildInputs = [
+      nixpkgs.makeWrapper
+    ];
 
-    # buildInputs = lib.optionals stdenv.isLinux
-    #   ([
-    #     alsa-lib
-    #   ])
-    # ++ lib.optionals stdenv.isDarwin (with darwin; [
-    #   apple_sdk.frameworks.AppKit
-    #   apple_sdk.frameworks.AudioToolbox
-    # ]);
+    postInstall = ''
+      wrapProgram $out/bin/hlsdl \
+        --prefix PATH : ${nixpkgs.ffmpeg_5-headless}/bin
+    '';
   };
 }
