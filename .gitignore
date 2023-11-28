@@ -1,2 +1,4 @@
 .devenv
 .direnv
+output
+.pre-commit-config.yaml

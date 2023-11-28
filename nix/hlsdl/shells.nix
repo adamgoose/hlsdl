@@ -20,6 +20,13 @@ in
           enable = true;
         };
 
+        scripts.asynq.exec = ''
+          ${cells.asynq.apps.asynq}/bin/asynq \
+            --uri=localhost:6379 \
+            --db=0 \
+            $@
+        '';
+
         pre-commit.hooks = {
           gomod2nix = {
             enable = true;
