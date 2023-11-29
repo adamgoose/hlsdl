@@ -2,8 +2,22 @@
     "manifest_version": 3,
     "name": "HLSDL",
     "version": "1.0",
-    "permissions": ["webRequest", "webRequestBlocking", "<all_urls>"],
+    "permissions": [
+        "storage",
+        "scripting",
+        "webRequest",
+        "contextMenus"
+    ],
+    "host_permissions": [
+        "<all_urls>"
+    ],
     "background": {
         "service_worker": "background.js"
+    },
+    "icons": {
+        "16": "icons/icon16.jpeg",
+        "32": "icons/icon32.jpeg",
+        "48": "icons/icon48.jpeg",
+        "128": "icons/icon128.jpeg"
     }
 }
