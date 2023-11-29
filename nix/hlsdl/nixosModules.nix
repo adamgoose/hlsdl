@@ -14,6 +14,11 @@
           description = "User to run the HLSDL Server as";
         };
 
+        out = l.mkOption {
+          type = l.types.str;
+          description = "Output directory";
+        };
+
         redisPort = l.mkOption {
           type = l.types.int;
           default = 6379;
@@ -50,6 +55,7 @@
           wantedBy = [ "multi-user.target" ];
 
           environment = {
+            HLSDL_OUT = cfg.out;
             HLSDL_REDIS_ADDR = "localhost:${l.toString cfg.redisPort}";
             HLSDL_REDIS_DB = l.toString cfg.redisDb;
           };
@@ -60,7 +66,6 @@
             RestartForceExitStatus = "3 4";
             User = cfg.user;
             ExecStart = "${cell.apps.default}/bin/hlsdl server";
-            WorkingDirectory = "/tmp";
           };
         };
 

@@ -5,9 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"path/filepath"
 	"time"
 
 	"github.com/hibiken/asynq"
+	"github.com/spf13/viper"
 	ffmpeg "github.com/u2takey/ffmpeg-go"
 )
 
@@ -41,8 +43,10 @@ func (h *DownloadHLSHandler) ProcessTask(ctx context.Context, t *asynq.Task) err
 		p.FileName = time.Now().Format("2006-01-02_15-04-05")
 	}
 
-	out := fmt.Sprintf("output/%s.mp4", p.FileName)
-	err := ffmpeg.Input(p.URL, nil).Output(out, ffmpeg.KwArgs{"c:v": "copy", "c:a": "copy"}).Run()
+	out := filepath.Join(viper.GetString("out"), fmt.Sprintf("%s.mp4", p.FileName))
+	err := ffmpeg.Input(p.URL, nil).
+		Output(out, ffmpeg.KwArgs{"c:v": "copy", "c:a": "copy"}).
+		Run()
 	if err != nil {
 		log.Println(err)
 	}
