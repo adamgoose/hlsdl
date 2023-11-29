@@ -39,7 +39,9 @@ func (h *DownloadHLSHandler) ProcessTask(ctx context.Context, t *asynq.Task) err
 		return err
 	}
 
-	if p.FileName == "" {
+	if p.FileName != "" {
+		p.FileName = filepath.Clean(p.FileName)
+	} else {
 		p.FileName = time.Now().Format("2006-01-02_15-04-05")
 	}
 

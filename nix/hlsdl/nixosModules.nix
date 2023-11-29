@@ -14,6 +14,12 @@
           description = "User to run the HLSDL Server as";
         };
 
+        listen = l.mkOption {
+          type = l.types.str;
+          default = ":8881";
+          description = "Listen address for the HTTP Server";
+        };
+
         out = l.mkOption {
           type = l.types.str;
           description = "Output directory";
@@ -56,6 +62,7 @@
 
           environment = {
             HLSDL_OUT = cfg.out;
+            HLSDL_LISTEN = cfg.listen;
             HLSDL_REDIS_ADDR = "localhost:${l.toString cfg.redisPort}";
             HLSDL_REDIS_DB = l.toString cfg.redisDb;
           };

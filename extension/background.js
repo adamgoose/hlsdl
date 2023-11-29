@@ -46,7 +46,7 @@ chrome.webRequest.onBeforeRequest.addListener(
       },
       args: [
         url.toString(),
-        'http://roxie:8881/dl?url=' + encodeURIComponent(url.toString()) + '&title=' + encodeURIComponent(tab.title)
+        'http://roxie:8881/dl?url=' + encodeURIComponent(url.toString()) + '&filename=' + encodeURIComponent(tab.title)
       ]
     })
 
