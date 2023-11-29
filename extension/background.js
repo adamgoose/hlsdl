@@ -41,8 +41,10 @@ chrome.webRequest.onBeforeRequest.addListener(
     await chrome.scripting.executeScript({
       target: { tabId: details.tabId },
       func: (url, downloadUrl) => {
-        console.log('HLSDL Detection: ', url)
+        console.log('HLSDL Detection!')
+        console.log('URL: ', url)
         console.log('Download: ', downloadUrl)
+        console.log('---------------------------')
       },
       args: [
         url.toString(),
