@@ -7,13 +7,15 @@ import (
 	"github.com/adamgoose/hlsdl/lib/jobs"
 	"github.com/defval/di"
 	"github.com/hibiken/asynq"
+	"github.com/hibiken/asynqmon"
 	"github.com/labstack/echo/v4"
 	"github.com/spf13/viper"
 )
 
 type API struct {
 	di.Inject
-	Asynq *asynq.Client
+	Asynq    *asynq.Client
+	Asynqmon *asynqmon.HTTPHandler
 }
 
 func (a *API) Run(wg *sync.WaitGroup, errChan chan error) {
@@ -24,6 +26,8 @@ func (a *API) Run(wg *sync.WaitGroup, errChan chan error) {
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "HLSDL")
 	})
+
+	e.Any("/asynq*", echo.WrapHandler(a.Asynqmon))
 
 	e.GET("/dl", func(c echo.Context) error {
 		url := c.QueryParam("url")

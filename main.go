@@ -5,6 +5,7 @@ import (
 	"github.com/adamgoose/hlsdl/lib"
 	"github.com/defval/di"
 	"github.com/hibiken/asynq"
+	"github.com/hibiken/asynqmon"
 	"github.com/spf13/viper"
 )
 
@@ -19,6 +20,12 @@ func main() {
 		}),
 		di.Provide(func(r asynq.RedisClientOpt) *asynq.Client {
 			return asynq.NewClient(r)
+		}),
+		di.Provide(func(r asynq.RedisClientOpt) *asynqmon.HTTPHandler {
+			return asynqmon.New(asynqmon.Options{
+				RootPath:     "/asynq",
+				RedisConnOpt: r,
+			})
 		}),
 	); err != nil {
 		panic(err)
