@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 	"sync"
+	"time"
 
 	"github.com/adamgoose/hlsdl/lib/jobs"
 	"github.com/defval/di"
@@ -43,7 +44,7 @@ func (a *API) Run(wg *sync.WaitGroup, errChan chan error) {
 		}
 		t := j.Task()
 
-		_, err := a.Asynq.Enqueue(t)
+		_, err := a.Asynq.Enqueue(t, asynq.Retention(24*time.Hour))
 		if err != nil {
 			return err
 		}
