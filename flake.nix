@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     devenv.url = "github:cachix/devenv/v0.6.3";
-    gomod2nix.url = "github:niklashhh/gomod2nix/fix-recursive-symlinker";
+    gomod2nix.url = "github:nix-community/gomod2nix/v1.6.0";
     gomod2nix.inputs.nixpkgs.follows = "nixpkgs";
 
     std.url = "github:divnix/std";
@@ -16,33 +16,34 @@
     extra-substituters = "https://devenv.cachix.org https://cache.garnix.io";
   };
 
-  outputs = { std, ... }@inputs:
+  outputs = {std, ...} @ inputs:
     std.growOn
-      {
-        inherit inputs;
-        cellsFrom = ./nix;
-        cellBlocks = with std.blockTypes; [
-          (pkgs "pkgs")
-          (runnables "apps")
-          (functions "hydra")
-          (devshells "shells")
-          (functions "nixosModules")
-        ];
-      }
-      {
-        devShells = std.harvest inputs.self [ "hlsdl" "shells" ];
+    {
+      inherit inputs;
+      cellsFrom = ./nix;
+      cellBlocks = with std.blockTypes; [
+        (pkgs "pkgs")
+        (runnables "apps")
+        (functions "hydra")
+        (devshells "shells")
+        (functions "nixosModules")
+      ];
+    }
+    {
+      devShells = std.harvest inputs.self ["hlsdl" "shells"];
 
-        packages = std.harvest inputs.self [
-          [ "hlsdl" "apps" ]
-        ];
+      packages = std.harvest inputs.self [
+        ["hlsdl" "apps"]
+      ];
 
-        hydraJobs = (std.harvest inputs.self [
-          [ "hlsdl" "hydra" ]
-        ]).x86_64-linux;
+      hydraJobs =
+        (std.harvest inputs.self [
+          ["hlsdl" "hydra"]
+        ])
+        .x86_64-linux;
 
-        nixosModules = std.harvest inputs.self [
-          [ "hlsdl" "nixosModules" ]
-        ];
-      };
-
+      nixosModules = std.harvest inputs.self [
+        ["hlsdl" "nixosModules"]
+      ];
+    };
 }
